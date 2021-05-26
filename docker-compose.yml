@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+  go-app:
+    build:
+        context: ./
+        dockerfile: ./Dockerfile
+    volumes:
+      - ./:/go/src/app
+    command: "go run main.go"
+    depends_on:
+      - redis
