@@ -20,7 +20,7 @@ func main() {
 	router.Use(cors.New(corsConfig))
 
 	redisClient := redis.NewClient(&redis.Options{
-		Addr: "redis:6379",
+		Addr: os.Getenv("REDIS_ADDR"),
 	})
 
 	router.GET("/helloworld", func(c *gin.Context) {

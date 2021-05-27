@@ -6,13 +6,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-const END_POINT = "http://localhost:3000"
+var API_END_POINT = os.Getenv("API_END_POINT")
 
 var _ = Describe("Integration Test", func() {
 
@@ -23,7 +24,7 @@ var _ = Describe("Integration Test", func() {
 	When("GET /helloworld", func() {
 		It("can get msg from Redis", func() {
 			expect := "Hello World"
-			res, err := http.Get(END_POINT + "/helloworld")
+			res, err := http.Get(API_END_POINT + "/helloworld")
 			Expect(err).To(BeNil())
 			body, err := ioutil.ReadAll(res.Body)
 			res.Body.Close()
@@ -34,7 +35,7 @@ var _ = Describe("Integration Test", func() {
 })
 
 func isReady(readyCh chan bool) {
-	_, err := http.Get(END_POINT + "/healthcheck")
+	_, err := http.Get(API_END_POINT + "/healthcheck")
 	if err == nil {
 		readyCh <- true
 		return
